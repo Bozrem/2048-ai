@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private int[][] matrix;
+    private final int[][] matrix;
 
     public Game(){
         matrix = new int[4][4];
@@ -33,7 +33,11 @@ public class Game {
     }
 
     public boolean moveUp(){
-        if (isGameOver()) return false;
+        if (isGameOver()) {
+            //System.out.println("Game Over");
+            return false;
+        }
+        boolean boardChanged = false;
         for (int j = 0; j < 4; j++) {
             int lastMergePosition = 0;
             for (int i = 1; i < 4; i++) {
@@ -44,10 +48,12 @@ public class Game {
                         matrix[previous][j] = matrix[current][j];
                         matrix[current][j] = 0;
                         current = previous;
+                        boardChanged = true;
                     } else if (matrix[previous][j] == matrix[current][j]) {
                         matrix[previous][j] *= 2;
                         matrix[current][j] = 0;
                         lastMergePosition = previous + 1;
+                        boardChanged = true;
                         break;
                     } else {
                         break;
@@ -55,11 +61,18 @@ public class Game {
                 }
             }
         }
-        return true;
+        if (boardChanged) {
+            spawnRandomTile();
+        }
+        return boardChanged;
     }
 
     public boolean moveDown(){
-        if (isGameOver()) return false;
+        if (isGameOver()) {
+            //System.out.println("Game Over");
+            return false;
+        }
+        boolean boardChanged = false;
         for (int j = 0; j < 4; j++) {
             int lastMergePosition = 3;
             for (int i = 2; i >= 0; i--) {
@@ -70,10 +83,12 @@ public class Game {
                         matrix[next][j] = matrix[current][j];
                         matrix[current][j] = 0;
                         current = next;
+                        boardChanged = true;
                     } else if (matrix[next][j] == matrix[current][j]) {
                         matrix[next][j] *= 2;
                         matrix[current][j] = 0;
                         lastMergePosition = next - 1;
+                        boardChanged = true;
                         break;
                     } else {
                         break;
@@ -81,11 +96,18 @@ public class Game {
                 }
             }
         }
-        return true;
+        if (boardChanged) {
+            spawnRandomTile();
+        }
+        return boardChanged;
     }
 
     public boolean moveLeft(){
-        if (isGameOver()) return false;
+        if (isGameOver()) {
+            //System.out.println("Game Over");
+            return false;
+        }
+        boolean boardChanged = false;
         for (int i = 0; i < 4; i++) {
             int lastMergePosition = 0;
             for (int j = 1; j < 4; j++) {
@@ -96,10 +118,12 @@ public class Game {
                         matrix[i][previous] = matrix[i][current];
                         matrix[i][current] = 0;
                         current = previous;
+                        boardChanged = true;
                     } else if (matrix[i][previous] == matrix[i][current]) {
                         matrix[i][previous] *= 2;
                         matrix[i][current] = 0;
                         lastMergePosition = previous + 1;
+                        boardChanged = true;
                         break;
                     } else {
                         break;
@@ -107,11 +131,18 @@ public class Game {
                 }
             }
         }
-        return true;
+        if (boardChanged) {
+            spawnRandomTile();
+        }
+        return boardChanged;
     }
 
     public boolean moveRight(){
-        if (isGameOver()) return false;
+        if (isGameOver()) {
+            //System.out.println("Game Over");
+            return false;
+        }
+        boolean boardChanged = false;
         for (int i = 0; i < 4; i++) {
             int lastMergePosition = 3;
             for (int j = 2; j >= 0; j--) {
@@ -122,10 +153,12 @@ public class Game {
                         matrix[i][next] = matrix[i][current];
                         matrix[i][current] = 0;
                         current = next;
+                        boardChanged = true;
                     } else if (matrix[i][next] == matrix[i][current]) {
                         matrix[i][next] *= 2;
                         matrix[i][current] = 0;
                         lastMergePosition = next - 1;
+                        boardChanged = true;
                         break;
                     } else {
                         break;
@@ -133,11 +166,28 @@ public class Game {
                 }
             }
         }
-        return true;
+        if (boardChanged) {
+            spawnRandomTile();
+        }
+        return boardChanged;
     }
 
     public int[][] getMatrix(){
         return matrix;
+    }
+
+    public int[] getMatrixArray(){
+        int[] matrixArray = new int[16];
+        int index = 0;
+
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                matrixArray[index] = matrix[row][col];
+                index++;
+            }
+        }
+        //for (int num : matrixArray) System.out.println(num);
+        return matrixArray;
     }
 
     public boolean isGameOver(){
@@ -164,5 +214,15 @@ public class Game {
             }
         }
         return true;
+    }
+
+    public int getScore(){
+        int sum = 0;
+        for (int i = 0; i < 4; i++){
+            for (int e = 0; e < 4; e++){
+                sum += matrix[i][e];
+            }
+        }
+        return sum;
     }
 }

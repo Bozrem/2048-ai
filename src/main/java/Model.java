@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Model {
     int modelID;
     double[][] weightsToN1; //[input][n1]
@@ -37,36 +39,36 @@ public class Model {
         }
     } // Using Xavier distribution to somewhat randomly initialize the weights
 
-    public keyOutput runOutput(int[] inputs) {
+    public keyOutput[] runOutput(int[] inputs) {
         double[] filteredInputs = filterInputs(inputs);
         // Calculate n1
         double[] n1Nodes = computeLayer(filteredInputs, numOfInputs, numOfN1, biasN1, weightsToN1);
         double[] outNodes = computeLayer(n1Nodes, numOfN1, numOfOut, biasOut, weightsToOut);
-        return getBestNode(outNodes);
+        return getNodeProbabilityOrder(outNodes);
     } // Runs the model to get the models move for a given grid
 
-    private keyOutput getBestNode(double[] nodes) {
-        int likelyKey = 0;
-        double highestOutput = nodes[0];
-        for (int i = 1; i < numOfOut; i++) {
-            if (nodes[i] > highestOutput) {
-                likelyKey = i;
-                highestOutput = nodes[i];
+    private keyOutput[] getNodeProbabilityOrder(double[] nodes) {
+        // Create an array of indices
+        Integer[] indices = new Integer[nodes.length];
+        for (int i = 0; i < nodes.length; i++) {
+            indices[i] = i;
+        }
+        Arrays.sort(indices, (i1, i2) -> Double.compare(nodes[i2], nodes[i1]));
+        keyOutput[] orderedKeys = new keyOutput[4];
+
+        // Fill the orderedKeys array based on the sorted indices
+        for (int i = 0; i < indices.length; i++) {
+            switch (indices[i]) {
+                case 0 -> orderedKeys[i] = keyOutput.UP;
+                case 1 -> orderedKeys[i] = keyOutput.DOWN;
+                case 2 -> orderedKeys[i] = keyOutput.LEFT;
+                case 3 -> orderedKeys[i] = keyOutput.RIGHT;
+                default -> orderedKeys[i] = keyOutput.ERROR;
             }
         }
-        switch (likelyKey) {
-            case 0:
-                return keyOutput.UP;
-            case 1:
-                return keyOutput.DOWN;
-            case 2:
-                return keyOutput.LEFT;
-            case 3:
-                return keyOutput.RIGHT;
-            default:
-                return keyOutput.ERROR;
-        }
-    } // Get the highest likelihood output
+        return orderedKeys;
+    }
+
 
     private double[] computeLayer(double[] inputs, int numOfNodesIn, int numOfNodesOut, double[] biasNodes, double[][] weights) {
         double[] outNodes = new double[numOfNodesOut];
@@ -88,7 +90,7 @@ public class Model {
                 System.out.println("ERROR: Inputs are not powers of 2");
             }
             if (inputs[i] != 0) filteredInputs[i] = (Math.log(inputs[i]) / Math.log(2));
-            System.out.println(inputs[i]);
+            //System.out.println(inputs[i]);
         }
         return filteredInputs;
     } // Take the log base 2 of inputs to avoid exploding gradient problem with large numbers
