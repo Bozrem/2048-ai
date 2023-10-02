@@ -18,10 +18,19 @@ public class ModelManager {
         return instance;
     }
 
-    public void createNewGeneration(int generation, Model[] bestModels) {
-        for (int i = 0; i < 35; i++) {
-            int modelID = i + (generation * 100);
-            models.put(modelID, new Model(null, generation, modelID));
+    public void createNewGeneration(int generation, int[] bestModels) {
+        for (int i = 0; i < 5; i++){
+            for (int e = 0; e < 7; e++){
+                int modelID = ((i*7)+e) + (generation * 100);
+                if (bestModels != null){
+                    System.out.println("Created model " + modelID + " for generation " + generation + " from existing model");
+                    models.put(modelID, new Model(models.get(bestModels[i]), generation, modelID, false));
+                }
+                else {
+                    System.out.println("Created model " + modelID + " for generation " + generation + " from random model");
+                    models.put(modelID, new Model(null, generation, modelID, false));
+                }
+            }
         }
     }
 

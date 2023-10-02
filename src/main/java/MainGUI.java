@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 public class MainGUI {
@@ -23,7 +24,7 @@ public class MainGUI {
         frame.setVisible(true);
 
         // Update info and game boards
-        new Timer(200, evt -> {
+        new Timer(50, evt -> {
             // Update the infoLine with real stats
             // Update each game board panel
             updateInformation();
@@ -54,14 +55,15 @@ public class MainGUI {
         statistics[3] = 0; // reset current gen best score
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setLayout(new GridLayout(5, 7));
-        setGameBoards(0, rightPanel);
+        setGameBoards(statistics[0], rightPanel);
         frame.add(rightPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
 
     private static void setGameBoards(int generation, JPanel panel){
         ModelManager manager = ModelManager.getInstance();
-        manager.createNewGeneration(generation, null);
+        if (generation != 0) manager.createNewGeneration(generation, getTopFiveBoards());
+        else manager.createNewGeneration(generation, null);
         for (int i = 0; i < gameBoardPanels.length; i++){
             int modelID = i + (generation*100);
             gameBoardPanels[i] = new GameBoardPanel(modelID);
@@ -105,5 +107,39 @@ public class MainGUI {
         // Add the left panel to the main frame
         frame.add(leftPanel, BorderLayout.WEST);
     }
+
+
+    public static int[] getTopFiveBoards() {
+        int[] topFiveModelIds = new int[5];
+        int[] topFiveScores = new int[5];
+
+        // Initialize the arrays with the lowest possible values
+        for (int i = 0; i < 5; i++) {
+            topFiveScores[i] = Integer.MIN_VALUE;
+            topFiveModelIds[i] = -1;
+        }
+
+        for (GameBoardPanel panel : gameBoardPanels) {
+            int score = panel.getScore();
+            int modelId = panel.getModelID(); // Assuming you have a getModelID() method
+
+            for (int i = 0; i < 5; i++) {
+                if (score > topFiveScores[i]) {
+                    // Shift down the lower scores
+                    for (int j = 4; j > i; j--) {
+                        topFiveScores[j] = topFiveScores[j - 1];
+                        topFiveModelIds[j] = topFiveModelIds[j - 1];
+                    }
+                    // Insert the new top score
+                    topFiveScores[i] = score;
+                    topFiveModelIds[i] = modelId;
+                    break;
+                }
+            }
+        }
+
+        return topFiveModelIds;
+    }
+
 }
 

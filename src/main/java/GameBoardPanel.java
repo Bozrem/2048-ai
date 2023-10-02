@@ -88,4 +88,8 @@ public class GameBoardPanel extends JPanel {
     public int getScore() {
         return score;
     }
+
+    public int getModelID(){
+        return modelID;
+    }
 }
