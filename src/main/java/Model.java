@@ -9,7 +9,7 @@ public class Model {
     private double[] biasN1;
     private double[] biasOut;
     private final int numOfInputs = 16;
-    private final int numOfN1 = 8;
+    private final int numOfN1 = 20;
     private final int numOfOut = 4;
     private final Random random = new Random();
 

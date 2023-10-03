@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c8013371-cc1c-4c23-b4c5-9217378a5a27" name="Changes" comment="Feat. GUI V1&#10;Runs main loop with statistics in GUI&#10;All thats left is the training process">
+    <list default="true" id="c8013371-cc1c-4c23-b4c5-9217378a5a27" name="Changes" comment="Feat. AI Training, but it's bad&#10;Need to do some testing to see if its training properly, maybe improve method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/GameBoardPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/GameBoardPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModelManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Testing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Testing.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696131128043</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Feat. AI Training, but it's bad&#10;Need to do some testing to see if its training properly, maybe improve method">
+      <created>1696249724313</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1696249724313</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,6 +144,7 @@
     <MESSAGE value="Feat. base 2048 game" />
     <MESSAGE value="Feat. AI initialization framework" />
     <MESSAGE value="Feat. GUI V1&#10;Runs main loop with statistics in GUI&#10;All thats left is the training process" />
-    <option name="LAST_COMMIT_MESSAGE" value="Feat. GUI V1&#10;Runs main loop with statistics in GUI&#10;All thats left is the training process" />
+    <MESSAGE value="Feat. AI Training, but it's bad&#10;Need to do some testing to see if its training properly, maybe improve method" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feat. AI Training, but it's bad&#10;Need to do some testing to see if its training properly, maybe improve method" />
   </component>
 </project>
