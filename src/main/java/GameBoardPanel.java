@@ -6,6 +6,7 @@ public class GameBoardPanel extends JPanel {
     private boolean gameOver;
     private final int modelID;
     private int score = 0;
+    private static final int[] FONT_SIZES = {25, 23, 19, 13, 11};
 
     public GameBoardPanel(int modelID) {
         this.modelID = modelID;
@@ -17,7 +18,6 @@ public class GameBoardPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int cellSize = 35;
-        int[] FONT_SIZES = {25, 23, 19, 13, 11};
         score = game.getScore();
         if (gameOver) {
             Color bgColor = getBackground();
@@ -59,14 +59,12 @@ public class GameBoardPanel extends JPanel {
 
     public void updateBoard() {
         ModelManager manager = ModelManager.getInstance();
-        //System.out.println("Model ID: " + modelID);
         keyOutput[] moves = manager.getNextMoveProbability(modelID, game.getMatrixArray());
         if (game.isGameOver()) {
             gameOver = true;
         }
         boolean boardChanged = false;
         for (keyOutput move : moves) {
-            //System.out.println(move.name());
             switch (move) {
                 case UP -> boardChanged = game.moveUp();
                 case DOWN -> boardChanged = game.moveDown();

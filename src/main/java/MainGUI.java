@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.Arrays;
 import javax.swing.*;
 
 public class MainGUI {

@@ -27,14 +27,12 @@ public class Game {
         if(emptySpots.isEmpty()) return false;
         int[] randomSpot = emptySpots.get((int)(Math.random() * emptySpots.size()));
         int newTile = Math.random() < 0.1 ? 4 : 2;
-        //System.out.println("x:" + randomSpot[0] + " y:" + randomSpot[1] + " number: " + newTile);
         matrix[randomSpot[0]][randomSpot[1]] = newTile;
         return true;
     }
 
     public boolean moveUp(){
         if (isGameOver()) {
-            //System.out.println("Game Over");
             return false;
         }
         boolean boardChanged = false;
@@ -69,7 +67,6 @@ public class Game {
 
     public boolean moveDown(){
         if (isGameOver()) {
-            //System.out.println("Game Over");
             return false;
         }
         boolean boardChanged = false;
@@ -104,7 +101,6 @@ public class Game {
 
     public boolean moveLeft(){
         if (isGameOver()) {
-            //System.out.println("Game Over");
             return false;
         }
         boolean boardChanged = false;
@@ -139,7 +135,6 @@ public class Game {
 
     public boolean moveRight(){
         if (isGameOver()) {
-            //System.out.println("Game Over");
             return false;
         }
         boolean boardChanged = false;
@@ -186,7 +181,6 @@ public class Game {
                 index++;
             }
         }
-        //for (int num : matrixArray) System.out.println(num);
         return matrixArray;
     }
 

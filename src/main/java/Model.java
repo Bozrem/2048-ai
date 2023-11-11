@@ -2,73 +2,72 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Model {
-    private final int modelID;
+    
     private double[][] weightsToN1; //[input][n1]
     private double[][] weightsToOut; //[n1][output]
 
     private double[] biasN1;
     private double[] biasOut;
-    private final int numOfInputs = 16;
-    private final int numOfN1 = 20;
-    private final int numOfOut = 4;
+    private static final int INPUT_NEURONS = 16;
+    private static final int HIDDEN_1_NEURONS = 20;
+    private static final int OUT_NEURONS = 4;
     private final Random random = new Random();
 
     public Model(Model previousModel, int generation, int modelID, boolean zeroModel) {
         if (zeroModel) {
-            weightsToN1 = new double[numOfInputs][numOfN1];
-            weightsToOut = new double[numOfInputs][numOfN1];
+            weightsToN1 = new double[INPUT_NEURONS][HIDDEN_1_NEURONS];
+            weightsToOut = new double[INPUT_NEURONS][HIDDEN_1_NEURONS];
 
         }
         else if (previousModel == null) initializeModel();
         else{
             mutateModel(previousModel, generation);
         }
-        this.modelID = modelID;
     }
 
     private void mutateModel(Model previousModel, int generation){
-        biasOut = new double[numOfOut];
-        biasN1 = new double[numOfN1];
-        weightsToN1 = new double[numOfInputs][numOfN1];
-        weightsToOut = new double[numOfN1][numOfOut];
-        for (int i = 0; i < numOfInputs; i++) {
-            for (int e = 0; e < numOfN1; e++) {
+        biasOut = new double[OUT_NEURONS];
+        biasN1 = new double[HIDDEN_1_NEURONS];
+        weightsToN1 = new double[INPUT_NEURONS][HIDDEN_1_NEURONS];
+        weightsToOut = new double[HIDDEN_1_NEURONS][OUT_NEURONS];
+        for (int i = 0; i < INPUT_NEURONS; i++) {
+            for (int e = 0; e < HIDDEN_1_NEURONS; e++) {
                 double[][] previousWeights = previousModel.getWeightsToN1();
                 weightsToN1[i][e] = previousWeights[i][e] + getGaussianRandom(1.0/(generation+1.0));
             }
         }
-        for (int i = 0; i < numOfN1; i++) {
-            for (int e = 0; e < numOfOut; e++) {
+        for (int i = 0; i < HIDDEN_1_NEURONS; i++) {
+            for (int e = 0; e < OUT_NEURONS; e++) {
                 double[][] previousWeights = previousModel.getWeightsToOut();
                 weightsToOut[i][e] = previousWeights[i][e] + getGaussianRandom(1.0/(generation+1.0));
             }
         }
-        for (int i = 0; i < numOfN1; i++){
+        for (int i = 0; i < HIDDEN_1_NEURONS; i++){
             biasN1[i] = previousModel.biasN1[i] + getGaussianRandom(1.0/(generation+1.0));
         }
-        for (int i = 0; i < numOfOut; i++){
+        for (int i = 0; i < OUT_NEURONS; i++){
             biasOut[i] = previousModel.biasOut[i] + getGaussianRandom(1.0/(generation+1.0));
         }
     }
 
     private void initializeModel() {
-        biasOut = new double[numOfOut];
-        biasN1 = new double[numOfN1];
-        weightsToN1 = new double[numOfInputs][numOfN1];
-        weightsToOut = new double[numOfN1][numOfOut];
+        biasOut = new double[OUT_NEURONS];
+        biasN1 = new double[HIDDEN_1_NEURONS];
+        weightsToN1 = new double[INPUT_NEURONS][HIDDEN_1_NEURONS];
+        weightsToOut = new double[HIDDEN_1_NEURONS][OUT_NEURONS];
         initializeWeightsXavier();
     } // Generates a model with somewhat random weighting, for first time use
 
     public void initializeWeightsXavier() {
-        double varianceN1 = 2.0 / (numOfInputs + numOfN1);
-        double varianceOut = 2.0 / (numOfN1 + numOfOut);
-        for (int i = 0; i < numOfInputs; i++) {
-            for (int j = 0; j < numOfN1; j++) {
+        double varianceN1 = 2.0 / (INPUT_NEURONS + HIDDEN_1_NEURONS);
+        double varianceOut = 2.0 / (HIDDEN_1_NEURONS + OUT_NEURONS);
+        for (int i = 0; i < INPUT_NEURONS; i++) {
+            for (int j = 0; j < HIDDEN_1_NEURONS; j++) {
                 weightsToN1[i][j] = (Math.random() - 0.5) * 4 * Math.sqrt(varianceN1);
             }
         }
-        for (int i = 0; i < numOfN1; i++) {
-            for (int j = 0; j < numOfOut; j++) {
+        for (int i = 0; i < HIDDEN_1_NEURONS; i++) {
+            for (int j = 0; j < OUT_NEURONS; j++) {
                 weightsToOut[i][j] = (Math.random() - 0.5) * 4 * Math.sqrt(varianceOut);
             }
         }
@@ -81,8 +80,8 @@ public class Model {
     public keyOutput[] runOutput(int[] inputs) {
         double[] filteredInputs = filterInputs(inputs);
         // Calculate n1
-        double[] n1Nodes = computeLayer(filteredInputs, numOfInputs, numOfN1, biasN1, weightsToN1);
-        double[] outNodes = computeLayer(n1Nodes, numOfN1, numOfOut, biasOut, weightsToOut);
+        double[] n1Nodes = computeLayer(filteredInputs, INPUT_NEURONS, HIDDEN_1_NEURONS, biasN1, weightsToN1);
+        double[] outNodes = computeLayer(n1Nodes, HIDDEN_1_NEURONS, OUT_NEURONS, biasOut, weightsToOut);
         return getNodeProbabilityOrder(outNodes);
     } // Runs the model to get the models move for a given grid
 
